@@ -29,5 +29,8 @@ Utilities & useful commands:
 # Get info on webhook (such as pending updates and errors):
 foo@bar:~$ https://api.telegram.org/botYOUR_TOKEN/getWebhookInfo
 ```
-
+```
+# Re-Deploy new code to the function
+gcloud functions deploy telegram_bot --runtime python38 --trigger-http --project=telegram-bot-362319
+```
 

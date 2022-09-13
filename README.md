@@ -25,12 +25,18 @@ foo@bar:~$ curl "https://api.telegram.org/bot<TELEGRAM_TOKEN>/setWebhook?url=<UR
 
 
 Utilities & useful commands:
+
+```
+# Add your Project ID to ENV variable
+foo@bar:~$ export PROJECT_ID=<PROJECT_ID>
+```
+
 ```
 # Get info on webhook (such as pending updates and errors):
 foo@bar:~$ https://api.telegram.org/botYOUR_TOKEN/getWebhookInfo
 ```
 ```
 # Re-Deploy new code to the function
-gcloud functions deploy telegram_bot --runtime python38 --trigger-http --project=telegram-bot-362319
+gcloud functions deploy telegram_bot --runtime python38 --trigger-http --project=$PROJECT_ID
 ```
 

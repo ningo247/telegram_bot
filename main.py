@@ -1,5 +1,7 @@
 import os
+from queue import Empty
 from google.cloud import secretmanager
+import requests, json, random
 import telegram
 from telegram import Update
 from telegram.ext import CallbackContext
@@ -20,13 +22,27 @@ TELEGRAM_TOKEN = response.payload.data.decode("UTF-8")
 
 
 def start(update: Update, context: CallbackContext):
-    context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
+    # Get some fun fact
+    reqUrl = "https://uselessfacts.jsph.pl/random.json?language=en"
+    headersList = { "Accept": "*/*" }
+    response = requests.request("GET", reqUrl, data="",  headers=headersList)
+    response_json = json. loads(response.text)
+    fun_fact = response_json['text']
+    context.bot.send_message(chat_id=update.effective_chat.id, text=f'Hi, I am Senpai bot!')
+    context.bot.send_message(chat_id=update.effective_chat.id, text=f'Before we start, wanna hear a fun fact?')
+    context.bot.send_message(chat_id=update.effective_chat.id, text=f'{fun_fact}')
 
 def echo(update: Update, context: CallbackContext):
-    context.bot.send_message(chat_id=update.effective_chat.id, text=context.args[0])
+        if context.args:
+            echo_string = ' '.join(context.args)
+            context.bot.send_message(chat_id=update.effective_chat.id, text=f'{echo_string}')
+        else: context.bot.send_message(chat_id=update.effective_chat.id, text="echo cho ho o!")
+        
 
 def unknown(update: Update, context: ContextTypes):
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Sorry, I didn't understand that command.")
+    ADJECTIVES_LIST = ['want', 'need', 'prefer', 'looking for', 'should get', 'need you to give', 'think it\'s time for', 'love', 'in the mood for', 'was expecting']
+    adjective = random.choice(ADJECTIVES_LIST)
+    context.bot.send_message(chat_id=update.effective_chat.id, text=f'Let\'s focus here! I really {adjective} a command, which starts with /')
 
 def telegram_bot(request):
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
@@ -39,7 +55,7 @@ def telegram_bot(request):
     echo_handler = CommandHandler('echo', echo)
     dispatcher.add_handler(echo_handler)
 
-    unknown_handler = MessageHandler(filters.Filters.command, unknown)
+    unknown_handler = MessageHandler(~ filters.Filters.command, unknown)
     dispatcher.add_handler(unknown_handler)
     
     

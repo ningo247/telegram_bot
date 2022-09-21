@@ -9,19 +9,7 @@ from telegram.ext import CallbackContext
 from telegram.ext import Updater
 from telegram.ext import CommandHandler, Dispatcher, ContextTypes, MessageHandler, filters
 
-## Getting our TELEGRAM_TOKEN from the cloud
-# Create the Secret Manager client.
-client = secretmanager.SecretManagerServiceClient()
-# The secret_name should match the name of the secret you created in # the Secret Manager console
-secret_name = "TELEGRAM_TOKEN"
-# Your GCP project id
-project_id = "telegram-bot-362319"
-# Build the resource name of the secret version.
-request = {"name": f"projects/{project_id}/secrets/{secret_name}/versions/latest"}
-response = client.access_secret_version(request)
-# Access the secret version.
-TELEGRAM_TOKEN = response.payload.data.decode("UTF-8")
-## -------------------------------
+
 
 class Bot(telegram.Bot):
     def __init__(self, token: str, base_url: str = None, base_file_url: str = None, request: 'Request' = None, private_key: bytes = None, private_key_password: bytes = None, defaults: 'Defaults' = None):
@@ -55,9 +43,19 @@ class Bot(telegram.Bot):
         context.bot.send_message(chat_id=update.effective_chat.id, text=f'Let\'s focus here! I really {adjective} a command, which starts with /')
 
 
+## Getting our TELEGRAM_TOKEN from the cloud
+def get_token() -> str:
+    client = secretmanager.SecretManagerServiceClient()     # Create the Secret Manager client.
+    secret_name = "TELEGRAM_TOKEN"                          # The secret_name should match the name of the secret you created in # the Secret Manager console
+    project_id = os.environ.get("PROJECT_ID")                      # Your GCP project id
+    request = {"name": f"projects/{project_id}/secrets/{secret_name}/versions/latest"}  # Build the resource name of the secret version.
+    response = client.access_secret_version(request)
+    # Access the secret version and return as string.
+    return str(response.payload.data.decode("UTF-8"))
+
 
 def telegram_bot(request):
-    
+    TELEGRAM_TOKEN = get_token()
     bot = Bot(TELEGRAM_TOKEN)
     
     # Create all the bot handlers

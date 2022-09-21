@@ -47,7 +47,7 @@ class Bot(telegram.Bot):
 def get_token() -> str:
     client = secretmanager.SecretManagerServiceClient()     # Create the Secret Manager client.
     secret_name = "TELEGRAM_TOKEN"                          # The secret_name should match the name of the secret you created in # the Secret Manager console
-    project_id = os.environ.get("PROJECT_ID")                      # Your GCP project id
+    project_id = os.environ.get("PROJECT_ID")               # Your GCP project id
     request = {"name": f"projects/{project_id}/secrets/{secret_name}/versions/latest"}  # Build the resource name of the secret version.
     response = client.access_secret_version(request)
     # Access the secret version and return as string.

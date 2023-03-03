@@ -60,6 +60,7 @@ class Bot(telegram.Bot):
 
 def chat_gpt(message):
     '''takes in a message update, return ChatGPT'''
+    openai.apikey = get_token("OPENAI-API-KEY")
     response = openai.Completion.create(
         engine="davinci",
         prompt=message,
@@ -74,12 +75,12 @@ def chat_gpt(message):
 # Getting our TELEGRAM_TOKEN from the cloud
 
 
-def get_token() -> str:
+def get_token(secret_name: str) -> str:
     '''return the telegram token from google secret manager'''
     client = secretmanager.SecretManagerServiceClient(
     )     # Create the Secret Manager client.
     # The secret_name should match the name of the secret you created in # the Secret Manager console
-    secret_name = "TELEGRAM_TOKEN"
+    secret_name = secret_name
     # Your GCP project id
     project_id = os.environ.get("PROJECT_ID")
     # Build the resource name of the secret version.
@@ -92,7 +93,7 @@ def get_token() -> str:
 
 def telegram_bot(request):
     '''main function for telegram bot function'''
-    TELEGRAM_TOKEN = get_token()
+    TELEGRAM_TOKEN = get_token("TELEGRAM_TOKEN")
     bot = Bot(TELEGRAM_TOKEN)
 
     # Create all the bot handlers

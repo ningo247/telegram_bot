@@ -1,3 +1,7 @@
 python-telegram-bot==13.14
 google-cloud-secret-manager==2.8.0
 openai==0.19.0
+
+# DEV Dependencies
+# pytest
+# pytest-cov

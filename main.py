@@ -31,7 +31,7 @@ class Bot(telegram.Bot):
         # Get some fun fact
         reqUrl = "https://uselessfacts.jsph.pl/random.json?language=en"
         headersList = {"Accept": "*/*"}
-        response = requests.get("GET", reqUrl, data="",
+        response = requests.get(reqUrl, data="",
                                 headers=headersList, timeout=5)
         response_json = json. loads(response.text)
         fun_fact = response_json['text']
@@ -73,12 +73,9 @@ def chat_gpt(message):
     return response.choices[0].text.strip()
 
 # Getting our TELEGRAM_TOKEN from the cloud
-
-
 def get_token(secret_name: str) -> str:
     '''return the telegram token from google secret manager'''
-    client = secretmanager.SecretManagerServiceClient(
-    )     # Create the Secret Manager client.
+    client = secretmanager.SecretManagerServiceClient()     # Create the Secret Manager client.
     # The secret_name should match the name of the secret you created in # the Secret Manager console
     secret_name = secret_name
     # Your GCP project id

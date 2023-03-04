@@ -16,7 +16,8 @@ load_dotenv()
 
 @pytest.fixture
 def return_telegram_token():
-    token = os.getenv("telegram_token")
+    # token = os.getenv("telegram_token")
+    token = "fake-token"
     return token
 
 class TestBot:

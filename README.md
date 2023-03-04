@@ -40,3 +40,8 @@ foo@bar:~$ https://api.telegram.org/botYOUR_TOKEN/getWebhookInfo
 gcloud functions deploy telegram_bot --runtime python38 --trigger-http --project=$PROJECT_ID
 ```
 
+```
+# Running pytest unitests
+coverage run -m pytest
+```
+

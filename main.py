@@ -52,15 +52,19 @@ class Bot(telegram.Bot):
             context.bot.send_message(
                 chat_id=update.effective_chat.id, text=f'{echo_string}')
 
-    def unknown(self, update: Update, context: ContextTypes):
+    def unknown(self, update: Update, context: CallbackContext):
         '''takes in a message update and context, send a ChatGPT response'''
-        response = chat_gpt("I'm sorry, I don't understand. Can you please provide me with a valid command?")
+        if context.args:
+            usr_msg = ' '.join(context.args)
+            response = chat_gpt(usr_msg)
+        else: 
+            response = "I didn't understand what you were trying to say..."
         context.bot.send_message(chat_id=update.effective_chat.id, text=response)
 
 
 def chat_gpt(message):
     '''takes in a message update, return ChatGPT'''
-    openai.apikey = get_token("OPENAI-API-KEY")
+    openai.api_key = get_token("OPENAI-API-KEY")
     response = openai.Completion.create(
         engine="davinci",
         prompt=message,

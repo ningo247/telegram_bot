@@ -66,13 +66,14 @@ def chat_gpt(message):
     '''takes in a message update, return ChatGPT'''
     openai.api_key = get_token("OPENAI-API-KEY")
     response = openai.Completion.create(
-        engine="davinci",
+        model="text-davinci-003",
         prompt=message,
-        temperature=0.5,
-        max_tokens=1024,
-        n=1,
-        stop=None,
-        timeout=10,
+        temperature=0.9,
+        max_tokens=150,
+        top_p=1,
+        frequency_penalty=0,
+        presence_penalty=0.6,
+        stop=None
     )
     return response.choices[0].text.strip()
 

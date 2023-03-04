@@ -1,8 +1,0 @@
-- name: Deploy a Cloud Function
-  id: deploy-function
-  uses: google-github-actions/deploy-cloud-functions@v0.1.0
-  with:
-    name: telegram_bot
-    runtime: Python 3.8
-    project: ${{ secrets.gcp_project }}
-    credentials: ${{ secrets.gcp_credentials }}

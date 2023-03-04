@@ -13,7 +13,7 @@ from telegram.ext import CommandHandler, Dispatcher, ContextTypes, MessageHandle
 class Bot(telegram.Bot):
     ''' A class to represent a Telegram Bot which can get message update and send a crafted message respond'''
 
-    def __init__(self, token: str, base_url: str = None, base_file_url: str = None, request: 'Request' = None, private_key: bytes = None, private_key_password: bytes = None, defaults: 'Defaults' = None):
+    def __init__(self, token: str, base_url: str = None, base_file_url: str = None, request: 'Request' = None, private_key: bytes = None, private_key_password: bytes = None, defaults: telegram.ext.Defaults = None):
         '''
         Constructs all the necessary attributes for the Bot object.
 

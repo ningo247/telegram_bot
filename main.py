@@ -54,11 +54,10 @@ class Bot(telegram.Bot):
 
     def unknown(self, update: Update, context: CallbackContext):
         '''takes in a message update and context, send a ChatGPT response'''
-        if context.args:
-            usr_msg = ' '.join(context.args)
-            response = chat_gpt(usr_msg)
-        else: 
-            response = "I didn't understand what you were trying to say..."
+        usr_msg = update.message.text
+        response = chat_gpt(usr_msg)
+        # else: 
+            # response = "I didn't understand what you were trying to say..."
         context.bot.send_message(chat_id=update.effective_chat.id, text=response)
 
 
